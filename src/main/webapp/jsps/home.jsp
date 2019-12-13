@@ -10,7 +10,7 @@
 </head>
 <body>
 <h1 align="center">Welcome to Mithun Technologies.</h1>
-<h1 align="center">good Training center for DevOps with AWS in Maratha Halli and also for Job Assitance Job Support also...Teaching Real Time scnerios....DevOps Trending tommorow 14/12</h1>
+<h1 align="center">very good Training center for DevOps with AWS in Maratha Halli and also for Job Assitance Job Support also...Teaching Real Time scnerios....DevOps Trending tommorow 14/12</h1>
 <hr>
 <div style="text-align: center;">
 	<span>

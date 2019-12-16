@@ -1,0 +1,52 @@
+node
+{
+    
+echo "GitHub BranhName ${env.BRANCH_NAME}"
+  echo "Jenkins Job Number ${env.BUILD_NUMBER}"
+  echo "Jenkins Node Name ${env.NODE_NAME}"
+  
+  echo "Jenkins Home ${env.JENKINS_HOME}"
+  echo "Jenkins URL ${env.JENKINS_URL}"
+  echo "JOB Name ${env.JOB_NAME}"
+  
+   properties([
+    buildDiscarder(logRotator(numToKeepStr: '3')),
+    pipelineTriggers([
+        pollSCM('* * * * *')
+    ])
+  ])
+      
+  def mavenHome=tool name: "maven3.6.3", type: "maven"
+    stage('checkoutthecode'){
+        git branch: 'development', credentialsId: '4d57de9d-4080-49ba-ab6e-dede0040b00a', url: 'https://github.com/subramanyam1995s/maven-web-application.git'
+    }
+    
+    stage('build'){
+        sh "${mavenHome}/bin/mvn clean package"
+    }
+    
+    stage('uploadartifactsintonexus'){
+    
+    sh  "${mavenHome}/bin/mvn deploy"
+
+    }
+    stage('DeploytoTomcat'){
+        
+        sshagent(['735eb010-58ac-407c-8e11-e91523d942a6'])  {
+    sh "scp -o StrictHostKeyChecking=no target/maven-web-application.war ec2-user@13.126.107.255:/opt/apache-tomcat-9.0.29/webapps/maven-web-application.war"
+    
+}
+    }
+    
+    stage('emailnotification'){
+        
+        emailext body: '''build is over 
+
+
+Regards
+pai
+bglr''', subject: 'build is over', to: 'siva20191995@gmail.com'
+    }
+    
+}
+
